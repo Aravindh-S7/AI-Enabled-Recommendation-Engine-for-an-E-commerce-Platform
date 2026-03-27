@@ -1,6 +1,11 @@
+import os
 import reflex as rx
+
+# Use REFLEX_API_URL when provided by deployed environments.
+# Fall back to local Reflex runtime in development.
+api_url = os.environ.get("REFLEX_API_URL") or "http://127.0.0.1:8000"
 
 config = rx.Config(
     app_name="AI_Enabled_Recommendation_Engine_for_an_E_commerce_Platform",
-    api_url="https://ai-enabled-recommendation-engine-for-an-e-commerce-platform.reflex.run", # Placeholder or let Reflex Cloud set it
+    api_url=api_url,
 )
