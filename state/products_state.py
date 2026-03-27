@@ -11,7 +11,7 @@ class ProductsState(rx.State):
     
     def fetch_products(self):
         # Extract query from URL if visiting via search redirect
-        params = self.get_query_params()
+        params = self.router.page.params
         if "q" in params:
             self.search_query = params["q"]
             
