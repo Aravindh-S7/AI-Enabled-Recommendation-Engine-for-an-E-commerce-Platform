@@ -1,6 +1,9 @@
 import pandas as pd
+from config import DATA_PATH
 
-def get_rating_based_recommendations(top_n=10, min_reviews=0, data_path='cleaned_data.csv'):
+def get_rating_based_recommendations(top_n=10, min_reviews=0, data_path=None):
+    if data_path is None:
+        data_path = DATA_PATH
     """
     Recommend top-rated products for new users based on global average ratings.
     Logic: Group by product -> Take average rating -> Sort descending.

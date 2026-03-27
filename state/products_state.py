@@ -2,6 +2,7 @@ import reflex as rx
 import pandas as pd
 import os
 from typing import List, Dict, Any
+from config import DATA_PATH
 
 class ProductsState(rx.State):
     """Local state for fetching global catalog of products."""
@@ -14,10 +15,12 @@ class ProductsState(rx.State):
         params = self.router.page.params
         if "q" in params:
             self.search_query = params["q"]
+        else:
+            self.search_query = ""
             
         try:
-            if os.path.exists('cleaned_data.csv'):
-                data = pd.read_csv('cleaned_data.csv')
+            if os.path.exists(DATA_PATH):
+                data = pd.read_csv(DATA_PATH)
                 unique_products = data.drop_duplicates(subset=['ProdID'])
                 
                 # Pre-calculate prices for sorting (since they are synthetic)
@@ -61,5 +64,5 @@ class ProductsState(rx.State):
     
     def handle_search_submit(self, form_data: Dict[str, Any]):
         query = form_data.get("q", "")
-        # Force a redirect to the products page with the query
-        return rx.redirect(f"/products?q={query}")
+        # Force a redirect to the home page with the query
+        return rx.redirect(f"/?q={query}")

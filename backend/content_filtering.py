@@ -1,8 +1,11 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from config import DATA_PATH
 
-def get_content_based_recommendations(product_id, top_n=10, data_path='cleaned_data.csv'):
+def get_content_based_recommendations(product_id, top_n=10, data_path=None):
+    if data_path is None:
+        data_path = DATA_PATH
     """
     Recommend products similar to a given product using content-based filtering.
     """

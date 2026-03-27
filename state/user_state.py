@@ -2,6 +2,7 @@ import reflex as rx
 import pandas as pd
 import os
 from dotenv import load_dotenv
+from config import DATA_PATH
 
 load_dotenv()
 
@@ -82,10 +83,9 @@ class UserState(rx.State):
         self.user_id = mapped_numeric_id
         
         # Check if user exists in the dataset
-        data_path = 'cleaned_data.csv'
         try:
-            if os.path.exists(data_path):
-                data = pd.read_csv(data_path, usecols=["User's ID"])
+            if os.path.exists(DATA_PATH):
+                data = pd.read_csv(DATA_PATH, usecols=["User's ID"])
                 if self.user_id in data["User's ID"].values:
                     self.is_new_user = False
                 else:

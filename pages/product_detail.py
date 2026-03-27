@@ -3,6 +3,9 @@ from components.navbar import navbar
 from state.cart_state import CartState
 from state.recommendation_state import RecommendationState
 from components.product_card import product_card
+from config import DATA_PATH
+import pandas as pd
+import os
 class ProductDetailState(rx.State):
     """Local state for product details. Typically queries ID from URL Params."""
     current_product: dict = {
@@ -21,8 +24,8 @@ class ProductDetailState(rx.State):
             target_id = int(self.pid)
             import pandas as pd
             import os
-            if os.path.exists('cleaned_data.csv'):
-                df = pd.read_csv('cleaned_data.csv')
+            if os.path.exists(DATA_PATH):
+                df = pd.read_csv(DATA_PATH)
                 match = df[df['ProdID'] == target_id]
                 if not match.empty:
                     item = match.iloc[0].fillna('').to_dict()

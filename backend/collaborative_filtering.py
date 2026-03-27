@@ -1,8 +1,11 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from config import DATA_PATH
 
-def get_collaborative_recommendations(user_id, top_n=5, data_path='cleaned_data.csv'):
+def get_collaborative_recommendations(user_id, top_n=5, data_path=None):
+    if data_path is None:
+        data_path = DATA_PATH
     """
     Recommend products based on similar users' preferences (collaborative filtering).
     """
