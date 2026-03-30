@@ -2,51 +2,18 @@ import reflex as rx
 from components.navbar import navbar
 from state.cart_state import CartState
 from state.user_state import UserState
-from state.payment_state import PaymentState
 
-@rx.page(route="/payment", title="Razorpay Checkout")
+@rx.page(route="/payment", title="Checkout")
 def payment() -> rx.Component:
-    """Professional Razorpay Payment Page with order summary and gateway integration."""
+    """Clean checkout page — shows price summary, redirects to Razorpay."""
     return rx.box(
-        # Load Razorpay's checkout.js
-        rx.script(src="https://checkout.razorpay.com/v1/checkout.js"),
         navbar(),
         rx.container(
             rx.vstack(
                 rx.heading("Order Summary", size="8", margin_top="2rem", margin_bottom="1rem"),
                 rx.grid(
-                    # Left Column: Payment Methods & Details
+                    # Left Column: Shipping & Security Info
                     rx.vstack(
-                        rx.card(
-                            rx.vstack(
-                                rx.hstack(
-                                    rx.icon(tag="qr_code", size=24, color="blue"),
-                                    rx.heading("Scan & Pay with Any UPI App", size="4"),
-                                    spacing="2",
-                                ),
-                                rx.divider(),
-                                rx.text("You can also pay directly using the link below:", size="2", color="gray"),
-                                rx.link(
-                                    rx.button(
-                                        "Open Personal Razorpay Link",
-                                        color_scheme="green",
-                                        variant="outline",
-                                        width="100%",
-                                    ),
-                                    href=CartState.direct_payment_url,
-                                    is_external=True,
-                                    width="100%",
-                                ),
-                                rx.text("Pay to: SANJAY KRISHNAN KARTHIKEYAN", size="1", color="gray", margin_top="0.5rem"),
-                                width="100%",
-                                align_items="start",
-                                spacing="4",
-                            ),
-                            padding="1.5rem",
-                            width="100%",
-                            shadow="md",
-                            margin_top="1rem",
-                        ),
                         rx.card(
                             rx.vstack(
                                 rx.hstack(
@@ -55,7 +22,8 @@ def payment() -> rx.Component:
                                     spacing="2",
                                 ),
                                 rx.divider(),
-                                rx.text("Payment will be processed via Razorpay Secure Gateway.", size="2", color="gray"),
+                                rx.text("Your payment is 100% secure and encrypted.", size="2", color="gray"),
+                                rx.text("Powered by Razorpay Payment Gateway.", size="2", color="gray"),
                                 rx.badge("Test Mode Active", color_scheme="orange"),
                                 width="100%",
                                 align_items="start",
@@ -71,6 +39,7 @@ def payment() -> rx.Component:
                                 rx.divider(),
                                 rx.text(UserState.customer_display_name, weight="bold"),
                                 rx.text("Standard Delivery (3-5 business days)", size="2"),
+                                rx.text("Free Shipping on this order", size="2", color="green"),
                                 width="100%",
                                 align_items="start",
                                 spacing="4",
@@ -82,7 +51,7 @@ def payment() -> rx.Component:
                         ),
                         width="100%",
                     ),
-                    # Right Column: Order Price Breakdown
+                    # Right Column: Price Breakdown + Pay Button
                     rx.card(
                         rx.vstack(
                             rx.heading("Price Summary", size="4", margin_bottom="1rem"),
@@ -117,23 +86,44 @@ def payment() -> rx.Component:
                                 ),
                                 width="100%",
                             ),
-                            rx.button(
-                                "Proceed to Pay with Razorpay",
+                            # Hint to the user to enter the amount on Razorpay
+                            rx.callout(
+                                rx.hstack(
+                                    rx.icon(tag="info", size=16),
+                                    rx.text(
+                                        "On the Razorpay page, enter the amount shown above (₹",
+                                        CartState.total_payable,
+                                        ") to complete your payment.",
+                                        size="2",
+                                    ),
+                                    spacing="2",
+                                    align="center",
+                                ),
                                 color_scheme="blue",
-                                size="4",
+                                variant="surface",
+                                margin_top="1rem",
                                 width="100%",
-                                margin_top="2rem",
-                                on_click=PaymentState.start_payment,
-                                loading=PaymentState.status == "processing",
                             ),
-                            rx.cond(
-                                PaymentState.status == "failed",
-                                rx.callout(
-                                    PaymentState.error_message,
-                                    icon="alert-circle",
-                                    color_scheme="red",
+                            rx.link(
+                                rx.button(
+                                    rx.icon(tag="credit-card", size=18),
+                                    "Pay Now with Razorpay",
+                                    color_scheme="blue",
+                                    size="4",
+                                    width="100%",
                                     margin_top="1rem",
                                 ),
+                                href=CartState.direct_payment_url,
+                                is_external=True,
+                                width="100%",
+                            ),
+                            rx.text(
+                                "You will be redirected to Razorpay's secure payment page in a new tab.",
+                                size="1",
+                                color="gray",
+                                text_align="center",
+                                margin_top="0.5rem",
+                                width="100%",
                             ),
                             width="100%",
                             align_items="start",

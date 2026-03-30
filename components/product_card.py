@@ -1,4 +1,5 @@
 import reflex as rx
+from state.wishlist_state import WishlistState
 
 def product_card(product: dict) -> rx.Component:
     """
@@ -33,9 +34,21 @@ def product_card(product: dict) -> rx.Component:
                 width="100%",
                 padding_top="0.5rem"
             ),
-            rx.link(
-                rx.button("View Detail", width="100%", margin_top="1rem"),
-                href=f"/product/{product['ProdID']}"
+            rx.hstack(
+                rx.link(
+                    rx.button("View Detail", width="100%"),
+                    href=f"/product/{product['ProdID']}",
+                    flex="1"
+                ),
+                rx.button(
+                    rx.icon("heart"),
+                    color_scheme="red",
+                    variant="soft",
+                    on_click=WishlistState.add_to_wishlist(product)
+                ),
+                width="100%",
+                margin_top="1rem",
+                spacing="2"
             ),
             
             align_items="start",

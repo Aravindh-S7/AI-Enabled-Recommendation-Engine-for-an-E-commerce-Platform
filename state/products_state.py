@@ -21,7 +21,7 @@ class ProductsState(rx.State):
         try:
             if os.path.exists(DATA_PATH):
                 data = pd.read_csv(DATA_PATH)
-                unique_products = data.drop_duplicates(subset=['ProdID'])
+                unique_products = data.drop_duplicates(subset=['ProdID']).copy()
                 
                 # Pre-calculate prices for sorting (since they are synthetic)
                 unique_products["Price_Num"] = unique_products["ProdID"].astype(int).apply(lambda x: (x % 2500) + 499)

@@ -58,7 +58,14 @@ class ProductDetailState(rx.State):
             "Description": "Could not locate this product in the dataset."
         }
 
-@rx.page(route="/product/[pid]", title="Product Detail", on_load=ProductDetailState.load_product)
+    def load_product_with_recommendations(self):
+        """Loads product details then auto-fetches recommendations for this product."""
+        self.load_product()
+        product_id = self.current_product.get("ProdID")
+        if product_id and product_id != 999:
+            yield RecommendationState.fetch_recommendations(int(product_id))
+
+@rx.page(route="/product/[pid]", title="Product Detail", on_load=ProductDetailState.load_product_with_recommendations)
 def product_detail() -> rx.Component:
     """Dynamic routing page for individual product inspection."""
     return rx.box(
@@ -116,14 +123,7 @@ def product_detail() -> rx.Component:
             rx.divider(margin_top="4rem", margin_bottom="2rem"),
             
             rx.vstack(
-                rx.heading("Recommendation as per your history", size="6", margin_bottom="1rem", text_align="center"),
-                rx.button(
-                    "View Related Recommendations",
-                    on_click=lambda: RecommendationState.fetch_recommendations(ProductDetailState.current_product["ProdID"].to(int)),
-                    size="3",
-                    color_scheme="indigo",
-                    margin_bottom="2rem"
-                ),
+                rx.heading("You May Also Like", size="6", margin_bottom="1rem", text_align="center"),
                 rx.cond(
                     RecommendationState.is_loading,
                     rx.spinner(size="3"),

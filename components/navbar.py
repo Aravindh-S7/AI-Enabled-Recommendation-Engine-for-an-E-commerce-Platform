@@ -12,8 +12,8 @@ def navbar() -> rx.Component:
             rx.spacer(),
             rx.hstack(
                 rx.link("Home", href="/"),
-                rx.link("Products", href="/products"),
-                rx.link("Recommendations", href="/recommendations"),
+                rx.link("Wishlist", href="/wishlist"),
+                rx.link("Orders", href="/orders"),
                 rx.cond(UserState.logged_in, rx.link("Profile", href="/profile")),
                 
                 # Amazon-style search bar

@@ -6,14 +6,13 @@ from state.cart_state import CartState
 from state.recommendation_state import RecommendationState
 from state.payment_state import PaymentState
 from state.products_state import ProductsState
+from state.wishlist_state import WishlistState
 
 # Import pages (as we build them)
-import pages.recommendation
 import pages.profile
 import pages.home
 import pages.login
 import pages.signup
-import pages.products
 import pages.product_detail
 import pages.cart
 import pages.checkout

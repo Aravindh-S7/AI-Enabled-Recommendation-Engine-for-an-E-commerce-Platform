@@ -43,6 +43,7 @@ class UserState(rx.State):
             
             user = auth.create_user_with_email_and_password(self.email, self.password)
             self._handle_successful_login(user['localId'])
+            yield rx.redirect("/")
         except Exception as e:
             # Simple error parsing for UI
             self.auth_error = "Registration failed. " + str(e)
@@ -69,6 +70,7 @@ class UserState(rx.State):
             
             user = auth.sign_in_with_email_and_password(self.email, self.password)
             self._handle_successful_login(user['localId'])
+            yield rx.redirect("/")
         except Exception as e:
             self.auth_error = "Login failed. Please check credentials."
 

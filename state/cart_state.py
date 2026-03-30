@@ -73,12 +73,5 @@ class CartState(rx.State):
 
     @rx.var
     def direct_payment_url(self) -> str:
-        """Computed property for the personal Razorpay link with pre-filled amount."""
-        base_url = "https://razorpay.me/@sanjaykrishnankarthikeyan"
-        # Razorpay expects amount in paise (e.g. 100 for Rs. 1)
-        amount_paise = int(self.total_payable * 100)
-        return (
-            f"{base_url}?amount={amount_paise}"
-            if amount_paise > 0
-            else base_url
-        )
+        """Computed property for the personal Razorpay payment link."""
+        return "https://razorpay.me/@sanjaykrishnankarthikeyan"
