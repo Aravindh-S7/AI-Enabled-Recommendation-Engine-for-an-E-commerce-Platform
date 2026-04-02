@@ -10,6 +10,6 @@ assets/external/
 venv/
 env/
 
-# Secrets and Keys (DO NOT REMOVE)
-.env
+# Secrets and Keys
 serviceAccountKey.json
+.env

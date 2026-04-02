@@ -1,4 +1,8 @@
 import reflex as rx
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Import Application States to ensure they register
 from state.user_state import UserState

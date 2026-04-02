@@ -25,6 +25,7 @@ def navbar() -> rx.Component:
                                 name="q",
                                 width="250px",
                                 border_radius="full",
+                                auto_complete=False,
                             ),
                             rx.button(
                                 rx.icon(tag="search"),

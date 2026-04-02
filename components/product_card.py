@@ -8,8 +8,20 @@ def product_card(product: dict) -> rx.Component:
     """
     # Safe fallback values for UI
     img_url = rx.cond(product.contains("ImageURL"), product["ImageURL"], "/placeholder.jpg")
-    brand = rx.cond(product.contains("Brand"), product["Brand"], "Brand")
-    display_name = rx.cond(product.contains("Product_Display_Name"), product["Product_Display_Name"], brand)
+    brand = rx.cond(product.contains("Brand"), product["Brand"], "Unknown Brand")
+    category = rx.cond(product.contains("Category"), product["Category"], "")
+    
+    # Create a sensible fallback name if Product_Display_Name doesn't exist
+    fallback_name = f"{brand} {category}"
+    display_name = rx.cond(
+        product.contains("Product_Display_Name"), 
+        product["Product_Display_Name"], 
+        rx.cond(
+            fallback_name != " ", 
+            fallback_name, 
+            "Product"
+        )
+    )
     description = product["Description"]
     
     return rx.card(

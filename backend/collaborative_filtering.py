@@ -12,6 +12,20 @@ def get_collaborative_recommendations(user_id, top_n=5, data_path=None):
     # Load data
     data = pd.read_csv(data_path)
     
+    # Append real-time history from Firebase DB
+    try:
+        from backend.firebase_db import get_user_history_df
+        history_df = get_user_history_df()
+        if not history_df.empty:
+            # Attempt to type-cast to avoid merge conflicts
+            history_df["User's ID"] = history_df["User's ID"].astype(data["User's ID"].dtype)
+            history_df["ProdID"] = history_df["ProdID"].astype(data["ProdID"].dtype)
+            # Concat and allow pivot_table's mean aggregation to merge duplicates
+            df_to_concat = history_df[["User's ID", "ProdID", "Rating"]]
+            data = pd.concat([data, df_to_concat], ignore_index=True)
+    except Exception as e:
+        print(f"Failed to merge Firebase history: {e}")
+        
     # Check if user exists
     if user_id not in data["User's ID"].values:
         return f"User ID {user_id} not found in the dataset."

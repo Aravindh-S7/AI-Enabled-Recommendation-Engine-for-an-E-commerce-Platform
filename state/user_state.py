@@ -28,18 +28,8 @@ class UserState(rx.State):
             return
             
         try:
-            from pyrebase import initialize_app
-            firebase_config = {
-                "apiKey": os.getenv("FIREBASE_API_KEY", "placeholder"),
-                "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "placeholder"),
-                "projectId": os.getenv("FIREBASE_PROJECT_ID", "placeholder"),
-                "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "placeholder"),
-                "messagingSenderId": os.getenv("FIREBASE_SENDER_ID", "placeholder"),
-                "appId": os.getenv("FIREBASE_APP_ID", "placeholder"),
-                "databaseURL": os.getenv("FIREBASE_DATABASE_URL", "")
-            }
-            firebase = initialize_app(firebase_config)
-            auth = firebase.auth()
+            from backend.firebase_db import get_auth
+            auth = get_auth()
             
             user = auth.create_user_with_email_and_password(self.email, self.password)
             self._handle_successful_login(user['localId'])
@@ -55,18 +45,8 @@ class UserState(rx.State):
             return
             
         try:
-            from pyrebase import initialize_app
-            firebase_config = {
-                "apiKey": os.getenv("FIREBASE_API_KEY", "placeholder"),
-                "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "placeholder"),
-                "projectId": os.getenv("FIREBASE_PROJECT_ID", "placeholder"),
-                "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "placeholder"),
-                "messagingSenderId": os.getenv("FIREBASE_SENDER_ID", "placeholder"),
-                "appId": os.getenv("FIREBASE_APP_ID", "placeholder"),
-                "databaseURL": os.getenv("FIREBASE_DATABASE_URL", "")
-            }
-            firebase = initialize_app(firebase_config)
-            auth = firebase.auth()
+            from backend.firebase_db import get_auth
+            auth = get_auth()
             
             user = auth.sign_in_with_email_and_password(self.email, self.password)
             self._handle_successful_login(user['localId'])

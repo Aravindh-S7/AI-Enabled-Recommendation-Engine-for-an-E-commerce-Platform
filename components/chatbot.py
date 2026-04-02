@@ -44,6 +44,9 @@ class ChatState(rx.State):
     def toggle_chat(self):
         self.is_open = not self.is_open
 
+    def set_current_input(self, val: str):
+        self.current_input = val
+
     def send_message(self):
         if not self.current_input.strip():
             return

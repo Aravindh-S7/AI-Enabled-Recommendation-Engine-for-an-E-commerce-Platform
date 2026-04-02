@@ -11,7 +11,7 @@ def wishlist() -> rx.Component:
             rx.vstack(
                 rx.heading("My Wishlist", size="8", margin_top="3rem"),
                 rx.text(
-                    WishlistState.wishlist_count.to_string() + " item(s) saved",
+                    f"{WishlistState.wishlist_count} item(s) saved",
                     color="gray",
                     margin_top="0.5rem",
                     margin_bottom="2rem"

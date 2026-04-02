@@ -29,10 +29,13 @@ class ProductsState(rx.State):
                 # Filter
                 if self.search_query:
                     mask = (
-                        unique_products['Brand'].str.contains(self.search_query, case=False, na=False) |
-                        unique_products['Category'].str.contains(self.search_query, case=False, na=False) |
-                        unique_products['Description'].str.contains(self.search_query, case=False, na=False)
+                        unique_products['Brand'].astype(str).str.contains(self.search_query, case=False, na=False) |
+                        unique_products['Category'].astype(str).str.contains(self.search_query, case=False, na=False)
                     )
+                    
+                    if 'Product_Display_Name' in unique_products.columns:
+                        mask = mask | unique_products['Product_Display_Name'].astype(str).str.contains(self.search_query, case=False, na=False)
+                    
                     unique_products = unique_products[mask]
                 
                 # Sort

@@ -28,6 +28,12 @@ class RecommendationState(UserState):
         
         try:
             # Call combined approach from recommender.py
+            
+            # Log interaction to Firebase DB history if viewing a product
+            if current_product_id is not None and self.logged_in and self.user_id != -1:
+                from backend.firebase_db import log_user_interaction
+                log_user_interaction(self.user_id, str(current_product_id), action_type="view", rating=3.5)
+                
             recs_df = get_combined_recommendations(
                 user_id=self.user_id if self.logged_in else None,
                 is_new_user=self.is_new_user,
